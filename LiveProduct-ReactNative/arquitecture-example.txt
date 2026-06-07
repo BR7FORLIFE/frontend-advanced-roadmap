@@ -1,0 +1,288 @@
+Si tu proyecto Districore va a crecer bastante (autenticación, distribuidores, productos, inventario, usuarios, roles, auditoría, reportes, etc.), te recomiendo que NO organices por capas técnicas:
+
+❌ Mala idea para proyectos grandes:
+
+src/
+├── components/
+├── services/
+├── hooks/
+├── screens/
+├── models/
+├── utils/
+
+Porque cuando tengas 30 módulos terminarás con:
+
+screens/
+ ├── LoginScreen
+ ├── ProductScreen
+ ├── ProductDetailScreen
+ ├── UserScreen
+ ├── UserDetailScreen
+ ├── ...
+
+y será un infierno encontrar cosas.
+
+Organización por Features
+
+La estructura que suelen usar equipos grandes es:
+
+src/
+│
+├── app/
+│
+├── core/
+│
+├── shared/
+│
+├── features/
+│
+└── navigation/
+App
+
+Configuración global.
+
+app/
+├── providers/
+├── store/
+├── theme/
+├── config/
+└── App.tsx
+
+Ejemplo:
+
+app/
+ ├── store/
+ │    ├── index.ts
+ │    └── auth.slice.ts
+ │
+ ├── theme/
+ │    ├── colors.ts
+ │    └── typography.ts
+ │
+ └── config/
+      └── env.ts
+Core
+
+Infraestructura transversal.
+
+core/
+├── api/
+├── storage/
+├── security/
+├── cache/
+└── network/
+
+Ejemplo:
+
+core/
+├── api/
+│   ├── axios.ts
+│   └── interceptors.ts
+│
+├── storage/
+│   ├── secure-storage.ts
+│   └── async-storage.ts
+│
+├── security/
+│   ├── jwt.service.ts
+│   └── refresh.service.ts
+│
+└── network/
+    └── connectivity.ts
+
+Aquí pondrías todo el manejo de:
+
+JWT
+Refresh Token
+Axios
+Interceptors
+SecureStore
+Shared
+
+Componentes reutilizables.
+
+shared/
+├── components/
+├── hooks/
+├── types/
+├── constants/
+└── utils/
+
+Ejemplo:
+
+shared/
+├── components/
+│   ├── Button/
+│   ├── Input/
+│   ├── Modal/
+│   └── Card/
+│
+├── hooks/
+│   ├── useDebounce.ts
+│   └── usePagination.ts
+│
+└── utils/
+    ├── formatDate.ts
+    └── validators.ts
+Features
+
+Aquí vive el negocio.
+
+Cada feature es prácticamente un mini proyecto.
+
+features/
+├── auth/
+├── users/
+├── distributors/
+├── products/
+├── inventory/
+├── reports/
+└── settings/
+Auth
+features/
+└── auth/
+     ├── api/
+     ├── hooks/
+     ├── screens/
+     ├── components/
+     ├── types/
+     └── store/
+
+Ejemplo:
+
+auth/
+├── api/
+│   ├── login.ts
+│   ├── register.ts
+│   └── refresh.ts
+│
+├── screens/
+│   ├── LoginScreen.tsx
+│   ├── RegisterScreen.tsx
+│   └── VerifyEmailScreen.tsx
+│
+├── components/
+│   ├── LoginForm.tsx
+│   └── RegisterForm.tsx
+│
+├── store/
+│   └── auth.slice.ts
+│
+└── types/
+    └── auth.types.ts
+Products
+products/
+├── api/
+├── screens/
+├── components/
+├── hooks/
+├── store/
+└── types/
+
+Ejemplo:
+
+products/
+├── api/
+│   ├── createProduct.ts
+│   ├── getProducts.ts
+│   └── deleteProduct.ts
+│
+├── screens/
+│   ├── ProductListScreen.tsx
+│   ├── ProductDetailScreen.tsx
+│   └── ProductCreateScreen.tsx
+│
+├── components/
+│   ├── ProductCard.tsx
+│   └── ProductForm.tsx
+│
+└── store/
+    └── product.slice.ts
+Navigation
+navigation/
+├── RootNavigator.tsx
+├── AuthNavigator.tsx
+├── ProductNavigator.tsx
+└── AppNavigator.tsx
+Cómo modelaría Districore
+
+Yo visualizo algo así:
+
+features/
+│
+├── auth/
+│
+├── distributors/
+│
+├── users/
+│
+├── roles/
+│
+├── products/
+│
+├── inventory/
+│
+├── categories/
+│
+├── suppliers/
+│
+├── reports/
+│
+├── dashboard/
+│
+└── settings/
+Si quieres ir un nivel más Enterprise
+
+Dentro de cada feature puedes aplicar una mini arquitectura hexagonal:
+
+auth/
+│
+├── domain/
+│
+├── application/
+│
+├── infrastructure/
+│
+├── presentation/
+│
+└── store/
+
+Ejemplo:
+
+auth/
+├── domain/
+│   ├── User.ts
+│   └── AuthRepository.ts
+│
+├── application/
+│   ├── LoginUseCase.ts
+│   └── RegisterUseCase.ts
+│
+├── infrastructure/
+│   ├── AuthApiRepository.ts
+│   └── AuthMapper.ts
+│
+├── presentation/
+│   ├── screens/
+│   └── components/
+│
+└── store/
+
+Personalmente, para Districore haría una mezcla:
+
+src/
+├── app/
+├── core/
+├── shared/
+├── navigation/
+└── features/
+
+y dentro de cada feature:
+
+feature/
+├── api/
+├── screens/
+├── components/
+├── hooks/
+├── store/
+└── types/
