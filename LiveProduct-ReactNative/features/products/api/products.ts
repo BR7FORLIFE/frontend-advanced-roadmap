@@ -1,13 +1,14 @@
 import { api } from "../../../core/api/axios.config";
 
 interface ProductModel {
-  id: string;
-  name: string;
-  price: number;
+    id: string;
+    name: string;
+    price: number;
+    url: string;
 }
 
 interface ProductsResponse {
-  products: ProductModel[];
+    products: ProductModel[];
 }
 
 const paths = {
@@ -21,4 +22,8 @@ async function GetAllProducts() {
     return result.data.products;
 }
 
-export { GetAllProducts };
+async function ViewProduct(id: string) {
+    await api.get(`${paths.products.path}/${id}`);
+}
+
+export { GetAllProducts, ViewProduct };
