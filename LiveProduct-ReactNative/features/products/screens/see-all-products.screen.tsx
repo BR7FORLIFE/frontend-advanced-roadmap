@@ -1,7 +1,10 @@
+import { router } from "expo-router";
 import
   {
     ActivityIndicator,
+    Button,
     FlatList,
+    Pressable,
     StyleSheet,
     Text,
     View,
@@ -27,9 +30,20 @@ export default function SeeAllProducts() {
         <FlatList
           data={data}
           renderItem={({ item }) => (
-            <Card id={item.id} name={item.name} price={item.price} />
+            <Pressable
+              onPress={() => router.push(`/products/${item.id}`)}
+              id={item.id}
+            >
+              <Card name={item.name} price={item.price} url={item.url} />
+            </Pressable>
           )}
           keyExtractor={(item) => item.id}
+        />
+      </View>
+      <View style={styles.buttonProducts}>
+        <Button
+          title="ver visitas de cada producto"
+          onPress={() => router.push("/stats")}
         />
       </View>
     </Screen>
@@ -41,5 +55,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
+  },
+  buttonProducts: {
+    width: "50%",
   },
 });
